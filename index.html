@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <style>
+        .red { width: 100px; height: 100px; background: red}
+    </style>
+</head>
+<body>
+<button onclick="callOc()">JS传OC</button>
+<div class="red"></div>
+<script src="./dist/musee.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.18.1/axios.js"></script>
+<script>
+    // const ua = window.navigator.userAgent || '';
+    // const instance = axios.create({
+    //     baseURL: '//dev.api.musee.com.cn/hb',
+    //     timeout: 1000,
+    //     headers: {
+    //       Authorization: "bearer 594e64bc-42ac-444f-b30c-23773d52a298"
+    //     }
+    // });
+    // instance.get('sys/emp/info', {
+    //     headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded'
+    //     }
+    // }).then(res => {
+    //     alert(res.data.resultMsg)
+    //     console.log(musee.last(res.data.resultBody.permissions))
+    // })
+    const data = {
+        goods: '12333'
+    }
+    alert(musee.env.isMusee)
+    function callOc() {
+        console.log(musee.bridge.emit('toSpuDetail', data))
+    }
+</script>
+</body>
+</html>
