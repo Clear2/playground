@@ -1,4 +1,4 @@
-import DummyClass from "../src/library"
+import DummyClass from "../library"
 
 describe("Dummy test", () => {
     it("works if true is truthy", () => {
