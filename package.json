@@ -1,0 +1,48 @@
+{
+  "name": "musee",
+  "version": "0.0.1",
+  "description": "musee universal tools",
+  "main": "dist/musee.umd.js",
+  "module": "dist/musee.es5.js",
+  "typings": "dist/types/musee.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'src/__test__/**/*.ts'",
+    "start": "rollup -c ./scripts/rollup.config.ts -w",
+    "test": "jest --coverage",
+    "test:watch": "jest --coverage --watch",
+    "test:prod": "npm run lint && npm run test -- --no-cache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://clear2@github.com/Clear2/musee.git"
+  },
+  "author": "clear2",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Clear2/musee/issues"
+  },
+  "homepage": "https://github.com/Clear2/musee#readme",
+  "devDependencies": {
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.0.13",
+    "jest": "^26.0.1",
+    "lint-staged": "^10.2.10",
+    "lodash.camelcase": "^4.3.0",
+    "prettier": "^2.0.5",
+    "rollup": "^2.16.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-sourcemaps": "^0.6.2",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "ts-jest": "^26.1.0",
+    "tslint": "^6.1.2",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^9.0.0",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {}
+}
