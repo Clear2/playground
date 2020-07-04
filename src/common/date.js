@@ -1,5 +1,7 @@
-function formatType(type: string, format: string, value: string, regExpAttributes: string) {
-    const regExpMap: {[key: string]: string} = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function formatType(type, format, value, regExpAttributes) {
+    var regExpMap = {
         year: '(Y+)',
         month: '(M+)',
         date: '(D+)',
@@ -8,25 +10,20 @@ function formatType(type: string, format: string, value: string, regExpAttribute
         second: '(s+)',
         quarter: '(q+)',
         millisecond: '(S)'
-    }
-
+    };
     if (new RegExp(regExpMap[type], regExpAttributes).test(format)) {
-        const replaceStr = type === 'year'
+        var replaceStr = type === 'year'
             ? value.toString().substr(4 - RegExp.$1.length)
-            : (RegExp.$1.length === 1) ? value : pad(value)
-        format = format.replace(RegExp.$1, replaceStr)
+            : (RegExp.$1.length === 1) ? value : pad(value);
+        format = format.replace(RegExp.$1, replaceStr);
     }
-
-    return format
+    return format;
 }
-
-
-function pad(value: string) {
-    return ('00' + value).substr(('' + value).length)
+function pad(value) {
+    return ('00' + value).substr(('' + value).length);
 }
-
-function formatDate(date: Date, format: string) {
-    const map: {[key: string]: any} = {
+function formatDate(date, format) {
+    var map = {
         year: {
             value: date.getFullYear(),
             regExpAttributes: 'i'
@@ -55,17 +52,14 @@ function formatDate(date: Date, format: string) {
         millisecond: {
             value: date.getMilliseconds()
         }
+    };
+    for (var key in map) {
+        format = formatType(key, format, map[key].value, map[key].regExpAttributes);
     }
-
-    for (const key in map) {
-
-        format = formatType(key, format, map[key].value, map[key].regExpAttributes)
-    }
-
-    return format
+    return format;
 }
-
-export default {
-    pad,
-    formatDate
-}
+exports.default = {
+    pad: pad,
+    formatDate: formatDate
+};
+//# sourceMappingURL=date.js.map
