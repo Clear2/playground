@@ -3,13 +3,13 @@ import date from './common/date'
 import utils from './common/utils'
 import validate from './common/validate'
 import url from './common/url'
-import last from './array/last'
+import array from './common/array'
 
 export default {
     env,
     date,
     utils,
     validate,
-    last,
+    array,
     url
 }
