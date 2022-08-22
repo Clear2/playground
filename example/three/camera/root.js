@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
+import {DRACOLoader} from 'three/examples/jsm/loaders/DRACOLoader'
 
 
 let SCREEN_WIDTH = window.innerWidth;
@@ -11,11 +13,12 @@ export function THREERoot (params){
     const {
         alpha,
         canvas,
-        near,
-        far,
+        fov = 50,
+        near = 1,
+        far = 1000,
         creatControls = true
     } = params
-    const scene = new THREE.Scene();
+    const scene = new THREE.Scene()
     this.scene = scene
 
     const renderer = new THREE.WebGLRenderer( {
@@ -23,13 +26,12 @@ export function THREERoot (params){
         alpha: alpha,
         canvas: canvas
     })
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setPixelRatio(Math.min( window.devicePixelRatio, 2))
+    renderer.setSize( window.innerWidth, window.innerHeight )
     this.renderer = renderer
 
-    const camera = new THREE.PerspectiveCamera(  50, 0.5 * aspect, 150, 1000  );
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     this.camera = camera
-
 
 
     const dirLight1 = new THREE.DirectionalLight( 0xffffff );
@@ -63,5 +65,25 @@ THREERoot.prototype = {
     render: function () {
         this.renderer.render( this.scene, this.camera )
     }
+}
 
+export function LoadGLTF (path, callback){
+    const loader = new GLTFLoader()
+    const dracoLoader = new DRACOLoader()
+    dracoLoader.setDecoderPath( '/' )
+    loader.setDRACOLoader( dracoLoader )
+    loader.load(path,
+        // called when the resource is loaded
+        function ( gltf ) {
+            callback && callback(gltf)
+        },
+        // called while loading is progressing
+        function ( xhr ) {
+            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' )
+        },
+        // called when loading has errors
+        function ( error ) {
+            console.log( 'An error happened' )
+        }
+    );
 }
