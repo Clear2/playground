@@ -10,7 +10,7 @@ const vertex = `
 
 const frag = `
     void main() {
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0)
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
     }
 `
 
@@ -27,21 +27,74 @@ function main() {
       //用上面指定的颜色清除缓冲区
       gl.clear(gl.COLOR_BUFFER_BIT)
 
-}
+    const shaderProgram = initShaderProgram(gl, vertex, frag)
 
-function initShaderProgram(gl, vs, fs){
-    const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vertex)
-    const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, frag)
-
-}
-function loadShader(gl, type, source) {
-    const shader = gl.createShader(type)
-    gl.shaderSource(shader, source)
-    gl.compileShader(shader)
-    if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
-        gl.deleteShader(shader);
-        return null;
+    const paramInfo = {
+        program: shaderProgram,
+        attribLocations: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+        uniformLocations: {
+            projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
+            modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix')
+        }
     }
-    return shader
+    function drawScene(gl, paramInfo, buffers) {
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
+        gl.clearDepth(1.0);                 // Clear everything
+        gl.enable(gl.DEPTH_TEST);           // Enable depth testing
+        gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
+        // Clear the canvas before we start drawing on it.
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        const fieldOfView = 45 * Math.PI / 180;   // in radians
+        const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+        const zNear = 0.1;
+        const zFar = 100.0;
+        const projectionMatrix = glMatrix.mat4.create()
+        glMatrix.mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar)
+        const modelViewMatrix = glMatrix.mat4.create()
+
+        glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0])
+
+        const numComponents = 3
+        const type = gl.FLOAT
+        const normalize = false
+        const stride = 0
+        const offset = 0
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position)
+        gl.vertexAttribPointer(paramInfo.attribLocations.vertexPosition, numComponents, type, normalize, stride, offset);
+        gl.enableVertexAttribArray(paramInfo.attribLocations.vertexPosition)
+
+        gl.useProgram(paramInfo.program)
+        gl.uniformMatrix4fv(paramInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
+        gl.uniformMatrix4fv(paramInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
+
+        let offset1 = 0;
+        const vertexCount = 4;
+        gl.drawArrays(gl.TRIANGLE_STRIP, offset1, vertexCount);
+
+    }
+    const buffers  = initBuffers(gl)
+    console.log(buffers)
+    drawScene(gl,paramInfo, buffers)
 }
+
+
+
+// 创建对象, 创建一个缓冲器来存储它的顶点
+function initBuffers(gl) {
+    const positionBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER,positionBuffer)
+
+    const vertices = [
+        1.0,1.0,0.0,
+        -1.0,1.0,0.0,
+        1.0,-1.0,0.0,
+        -1.0,-1.0,0.0,
+    ]
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
+    return {
+        position: positionBuffer
+    }
+}
+
