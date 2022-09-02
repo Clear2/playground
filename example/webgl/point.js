@@ -20,6 +20,8 @@ const frag = `
 
 function main () {
     const canvas = document.querySelector('.canvas')
+    canvas.width = 600
+    canvas.heigth = 600
     const gl = canvas.getContext('webgl')
     if (!gl) {
         alert("无法初始化 WebGL，你的浏览器、操作系统或硬件等可能不支持 WebGL。");
@@ -43,7 +45,21 @@ function main () {
     // gl.clear(gl.COLOR_BUFFER_BIT)
     gl.drawArrays(gl.POINTS, 0, 1)
 
-    function click () {
-        
+    const g_points = []
+    canvas.addEventListener('mousedown', evt => click(evt, gl, canvas, a_position))
+
+    function click (ev, gl, canvas, a_Position) {
+        const rect = ev.target.getBoundingClientRect()
+
+        let x = (ev.clientX/rect.width)*2-1
+        let y = (ev.clientY/rect.height)*2-1
+        g_points.push(x)
+        g_points.push(-y)
+        gl.clear(gl.COLOR_BUFFER_BIT)
+        console.log(x,y, ev.clientY, rect.height)
+        for (let i = 0; i<g_points.length; i+=2) {
+            gl.vertexAttrib3f(a_Position, g_points[i], g_points[i+1], 0.0)
+            gl.drawArrays(gl.POINTS, 0, 1)
+        }
     }
 }

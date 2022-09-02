@@ -1,7 +1,7 @@
-import {LoadGLTF, THREERoot} from '../camera/root'
-import * as THREE from "three";
+import { LoadGLTF, THREERoot } from '../camera/root'
+import * as THREE from 'three'
 
-export function main(){
+export function main() {
     const root = new THREERoot({
         alpha: 0,
         fov: 45,
@@ -11,18 +11,13 @@ export function main(){
 
     root.camera.position.z = 1000
 
-    const mesh = new THREE.Mesh(
-        new THREE.SphereGeometry( 100, 16, 8 ),
-        new THREE.MeshBasicMaterial( { color: 'red', wireframe: true } )
-    );
-    root.scene.add( mesh )
+    const mesh = new THREE.Mesh(new THREE.SphereGeometry(100, 16, 8), new THREE.MeshBasicMaterial({ color: 'red', wireframe: true }))
+    root.scene.add(mesh)
 
-    LoadGLTF('/modelcat/zoulu.gltf', (glft) => {
+    LoadGLTF('/modelcat/zoulu.gltf', glft => {
         console.log(glft)
         root.scene.add(glft.scene)
     })
-    root.addUpdateCallback(() => {
-
-    })
+    root.addUpdateCallback(() => {})
 }
 main()
