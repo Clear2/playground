@@ -7,6 +7,8 @@ const data = [
     {key: '机智', val: 80},
     {key: '美貌', val: 60}
 ]
+import { options } from './charts.js'
+
 export function drawRadar ($el) {
     const initWidth = $el.offsetWidth*2;
     const initHeight = $el.offsetHeight*2;
@@ -18,8 +20,8 @@ export function drawRadar ($el) {
         ['耐力', 60]];
     const mCount = data.length; //边数
     const mCenter = initWidth/2; //中心点
-    const mRadius = mCenter - 50; //半径(减去的值用于给绘制的文本留空间)
-    const mAngle = Math.PI * 2 / mCount; //角度
+
+    let angleStep = -2 * Math.PI / mCount
     const mColorPolygon = '#B8B8B8'; //多边形颜色
     const mColorLines = '#B8B8B8'; //顶点连线颜色
     const mColorText = '#000000';
@@ -32,55 +34,62 @@ export function drawRadar ($el) {
     const mCtx = canvas.getContext('2d');
 
     drawPolygon(mCtx);
-    // drawLines(mCtx);
+    drawLines(mCtx);
     // drawText(mCtx);
     // drawRegion(mCtx);
     // drawCircle(mCtx);
     // 绘制多边形边
     function drawPolygon(ctx){
         ctx.save();
-        ctx.strokeStyle = mColorPolygon;
-        // const r = mRadius/ mCount; //单位半径
-        // console.log('-->>', r, mRadius)
-        //画6个圈
-        // for(let i = 0; i < 4; i ++){
-        //
-        // }
-        ctx.beginPath();
-        const currR = 150 * ( 0 + 1); //当前半径
-        //画6条边
-        // ctx.moveTo(mCenter, currR * Math.cos(mAngle * 0))
-        // ctx.lineTo(mCenter,  currR * Math.sin(mAngle * 0))
-
-        for(let j = 0; j < 6; j ++){
-            let x = mCenter + currR * Math.cos(mAngle * j);
-            let y = mCenter + currR * Math.sin(mAngle * j);
-            console.log(x, y, mAngle * j)
-
-            ctx.lineTo(x, y);
+        ctx.strokeStyle = mColorPolygon
+        ctx.strokeStyle="#b2b2b2";
+        ctx.lineWidth = 1;
+        ctx.translate(mCenter, mCenter);
+        ctx.rotate(-90 * 2 * Math.PI / 360);
+        for(let r = 200; r > 0 ; r -=50){
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(r,0);
+            for(let i = 0; i < mCount; i++){
+                ctx.rotate(angleStep);
+                ctx.lineTo(r,0);
+            }
+            ctx.closePath();
+            ctx.stroke();
+            //明暗色替换填充，此处从大到小切换颜色覆盖式绘制即可
+            ctx.fillStyle = '#685f54'
+            ctx.fill();
+            ctx.restore();
         }
-        ctx.closePath()
-        ctx.stroke();
-        ctx.restore();
+
+
     }
 
     //顶点连线
     function drawLines(ctx){
-        ctx.save();
+        //解构赋值拿到数据关键点
+        let {radar:{indicator:indicators},series:[{data:data}]} = options;
+        let colors = ['#c43e3a','#364c5a'];
+        let length = indicators.length;
+        let angleStep = -2 * Math.PI / length;
 
-        ctx.beginPath();
-        ctx.strokeStyle = mColorLines;
+        for(let i = 0; i < data.length; i++){
 
-        for(var i = 0; i < mCount; i ++){
-            var x = mCenter + mRadius * Math.cos(mAngle * i);
-            var y = mCenter + mRadius * Math.sin(mAngle * i);
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(120 * data[i].value[0] / indicators[0].max,0);
 
-            ctx.moveTo(mCenter, mCenter);
-            ctx.lineTo(x, y);
+            //遍历每组数据
+            for(let j = 1; j < data[i].value.length; j++){
+                ctx.rotate(angleStep);
+                ctx.lineTo(200 * data[i].value[j] / indicators[j].max,0);
+            }
+            ctx.restore();
+            ctx.lineTo(200 * data[i].value[0] / indicators[0].max,0);
+            ctx.strokeStyle = colors[i];
+            ctx.lineWidth = 2;
+            ctx.stroke();
         }
-
-        ctx.stroke();
-
         ctx.restore();
     }
 
