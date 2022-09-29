@@ -20,6 +20,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+*.parcel-cache
 
 example/three/.parcel-cache
 example/three/dist

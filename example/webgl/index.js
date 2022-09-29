@@ -76,7 +76,6 @@ function main() {
 
     }
     const buffers  = initBuffers(gl)
-    console.log(buffers)
     drawScene(gl,paramInfo, buffers)
 }
 
