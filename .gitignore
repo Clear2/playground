@@ -21,6 +21,3 @@ yarn-error.log*
 *.sln
 *.sw?
 *.parcel-cache
-
-example/three/.parcel-cache
-example/three/dist
