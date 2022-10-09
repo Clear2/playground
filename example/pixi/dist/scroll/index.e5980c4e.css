@@ -1,0 +1,22 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  color: #fff;
+  overscroll-behavior: none;
+  background-color: azure;
+  margin: 0;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 24px;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/*# sourceMappingURL=index.e5980c4e.css.map */

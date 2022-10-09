@@ -14,3 +14,4 @@ babel-loader：使用 Babel 和 webpack 来转译 JavaScript 文件。
 @babel/preset-react：转译 react 的 JSX
 @babel/plugin-proposal-class-properties：用来编译类(class)
 @babel/plugin-transform-runtime：防止污染全局，代码复用和减少打包体积
+babel/runtime
