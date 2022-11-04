@@ -5,8 +5,7 @@ import { IntlProvider } from 'react-intl'
 import RenderRouter  from './router'
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN'
-
-import './App.css'
+import './global.scss'
 
 function App() {
   return (

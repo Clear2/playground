@@ -1,13 +1,32 @@
-import PrivateRoute from './pravateRoute'
-import { useIntl } from 'react-intl'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import BasicLayout  from '@/layout/BasicLayout'
+import Analysis from '@/pages/DashBoard/Analysis'
+import Workplace from '@/pages/DashBoard/Workplace'
 
-const WrapperRouteComponent = ({ auth, children }) => {
-  const { formatMessage } = useIntl()
+export default [
+  {
+    path: '/',
 
-  if (auth) {
-    return <PrivateRoute>{children}</PrivateRoute>
+    element: <BasicLayout />,
+    children: [
+      // { name: 'x', path: '/', redirect: '/dashboard/analysis' },
+
+      {
+        path: '/dashboard',
+        name: 'dashboard',
+        children: [
+          {
+            path: '/dashboard/analysis',
+            name: 'analysis',
+            element: <Analysis />,
+          },
+          {
+            path: '/dashboard/workplace',
+            name: 'workplace',
+            element: <Workplace />,
+          },
+        ]
+      }
+    ]
   }
-  return <>{children}</>
-}
-
-export default WrapperRouteComponent
+]

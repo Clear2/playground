@@ -1,4 +1,4 @@
-import path from 'path'
+import { resolve }  from 'path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -6,7 +6,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   resolve: {
     alias: {
-      '@': path.join(__dirname, 'src'),
+      '@/': resolve(__dirname, 'src'),
+      '@/pages': resolve(__dirname, 'src/pages'),
+      '@/layout': resolve(__dirname, 'src/layout'),
     },
   },
   plugins: [react()],

@@ -1,0 +1,85 @@
+.login {
+    position: relative;
+    text-align: center;
+    background-image: linear-gradient(135deg, #130cb7 10%, #52e5e7 100%);
+    color: white;
+    height: 100%;
+  
+    .logo {
+      text-align: left;
+      color: #fff;
+      font-weight: 600;
+      font-size: 33px;
+      font-family: Avenir, helvetica neue, Arial, Helvetica, sans-serif;
+    }
+  
+    .header {
+      width: 328px;
+      margin: auto;
+      top: 50%;
+      position: relative;
+      transform: translate(0, -50%);
+      //@media screen and (max-width: @screen-sm) {
+      //  width: 95%;
+      //  max-width: 328px;
+      //}
+    }
+  
+    .bottom {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: 0;
+    }
+  
+    .waves {
+      position: relative;
+      width: 100%;
+      height: 15vh;
+      margin-bottom: -7px; /*Fix for safari gap*/
+      min-height: 100px;
+      max-height: 150px;
+    }
+  
+    .footer {
+      position: relative;
+      text-align: center;
+      color: #000;
+      background: #fff;
+      padding-bottom: 10px;
+    }
+  }
+  
+  .parallax > use {
+    animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+  }
+  
+  .parallax > use:nth-child(1) {
+    animation-delay: -2s;
+    animation-duration: 7s;
+  }
+  
+  .parallax > use:nth-child(2) {
+    animation-delay: -3s;
+    animation-duration: 10s;
+  }
+  
+  .parallax > use:nth-child(3) {
+    animation-delay: -4s;
+    animation-duration: 13s;
+  }
+  
+  .parallax > use:nth-child(4) {
+    animation-delay: -5s;
+    animation-duration: 20s;
+  }
+  
+  @keyframes move-forever {
+    0% {
+      transform: translate3d(-90px, 0, 0);
+    }
+    100% {
+      transform: translate3d(85px, 0, 0);
+    }
+  }
+  

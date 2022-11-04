@@ -1,26 +1,14 @@
-import WrapperRouteComponent from './config';
-import { useRoutes } from "react-router-dom";
+import { useRoutes } from 'react-router-dom';
+import metaRouters from './config.jsx'
+import Login from '@/pages/Login'
 
-import { BasicLayout } from '../layout/BasicLayout.jsx'
-import DashBoard from '../pages/DashBoard'
-import Login from '../pages/Login'
 const router = [
-  {
-    path: '/',
-    element: <WrapperRouteComponent><BasicLayout /></WrapperRouteComponent>,
-    children: [
-      {
-        path: '/dashboard',
-        element: <WrapperRouteComponent><DashBoard /></WrapperRouteComponent>
-      }
-    ]
-  },
+    ...metaRouters,
   {
     path: 'login',
     element: <Login />
   }
 ]
-
 
 const RenderRouter = () => {
   const element = useRoutes(router);
