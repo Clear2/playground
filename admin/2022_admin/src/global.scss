@@ -9,10 +9,12 @@ html, body, #root {
 
 .ant-layout {
   min-height: 100vh;
+
 }
 
 canvas {
   display: block;
+  position: absolute;
 }
 
 body {

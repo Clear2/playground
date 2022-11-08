@@ -17,7 +17,7 @@ export default function (props) {
     } = props
 
     return (
-        <LeftMenu {...props} flatMenuKeys={getFlatMenuKeys(menuData)}>111</LeftMenu>
+        <LeftMenu {...props} flatMenuKeys={getFlatMenuKeys(menuData)}></LeftMenu>
     )
 }
 

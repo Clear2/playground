@@ -1,12 +1,20 @@
 import { useRoutes } from 'react-router-dom';
 import metaRouters from './config.jsx'
 import Login from '@/pages/Login'
+import BasicLayout  from '@/layout/BasicLayout'
 
 const router = [
-    ...metaRouters,
   {
     path: 'login',
     element: <Login />
+  },
+  {
+    path: '/',
+    element: <BasicLayout />,
+    children: [
+      { path: '/', redirect: '/dashboard/analysis' },
+      ...metaRouters
+    ]
   }
 ]
 

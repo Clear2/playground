@@ -1,32 +1,36 @@
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
 import { Menu } from 'antd';
-const { SubMenu } = Menu;
 
-const getNavMenuItems = (menusData, parent) => {
-    if (!menusData) {
+const getNavMenuItems = (menuData, parent) => {
+    if (!menuData) {
         return [];
     }
-    return menusData.map(item => {
-            const itemDom = getSubMenuOrItem(item, parent)
-            return itemDom
-        }).filter(item => item && !item.hideInMenu)
+    return menuData.map((item, idx) => {
+        const ItemDom = getSubMenuOrItem(item, parent);
+
+        return ItemDom
+    })
 }
 
 const getSubMenuOrItem = (item) => {
-    if (item.children && !item.hideChildrenInMenu && item.children.some(child => child.name)) {
-        console.log('0mmmm--->>', item)
+    if (item.children) {
 
-        return getNavMenuItems(item.children)
+        // return <SubMenu
+        //     title={item.name}
+        //     key={item.path}>
+        //     {getNavMenuItems(item.children)}
+        // </SubMenu>
+        return {
+            label: item.name,
+            key: item.path,
+            children: getNavMenuItems(item.children)
+        }
     }
-
-    console.log('1mmmm--->>', item)
-    const itemPath = conversionPath(item.path)
-
     return {
         label: item.name,
-        key: itemPath
-    }    // return <Menu items={getMenuItemPath(item)}></Menu>
+        key: item.path,
+    }
+    // return <Menu.Item key={item.path}>{getMenuItemPath(item)}</Menu.Item>;
 }
 
 const conversionPath = path => {
@@ -37,52 +41,39 @@ const conversionPath = path => {
 };
 const getMenuItemPath = (item) => {
     const itemPath = conversionPath(item.path)
-    //
-    // const { target } = item
-    // if (/^https?:\/\//.test(itemPath)) {
-    //     return (
-    //         <a href={itemPath} target={target}>
-    //             <span>{name}</span>
-    //         </a>
-    //     )
-    // }
-    //
-    // return (
-    //     <Link key={itemPath} to={itemPath} target={target} replace={itemPath === location.pathname}>
-    //         <span>{name}</span>
-    //     </Link>
-    // )
-    return {
-        label: item.name,
-        key: itemPath
+    const { target } = item
+    if (/^https?:\/\//.test(itemPath)) {
+        return (
+            <a href={itemPath} target={target}>
+                <span>{item.name}</span>
+            </a>
+        )
     }
+    return (
+        <Link key={itemPath} to={itemPath} target={target} replace={itemPath === location.pathname}>
+            <span>{item.name}</span>
+        </Link>
+    )
+
 }
 
 const BaseMenu = (props) => {
+    let navigate = useNavigate();
+
     const { openKeys, menuData, theme, mode } = props;
-    // console.log('--->>', props)
 
     const handleOpenChange = () => {
 
     }
-    const items = [
-        { label: '菜单项一', key: 'item-1' }, // 菜单项务必填写 key
-        { label: '菜单项二', key: 'item-2' },
-        {
-            label: '子菜单',
-            key: 'submenu',
-            children: [{ label: '子菜单项', key: 'submenu-item-1' }],
-        },
-    ];
 
     const onClick = ({ item, key, keyPath, domEvent }) => {
+        console.log('-->',  key, keyPath)
+        navigate(key);
 
     }
-    const test =  getNavMenuItems(menuData)
-    console.log('1-->', getNavMenuItems(menuData))
+    console.log(getNavMenuItems(menuData))
     return (
-        <Menu items={items} mode={mode} theme={theme} onOpenChange={handleOpenChange} onClick={onClick}>
-            {/*{getNavMenuItems(menuData)}*/}
+        <Menu items={getNavMenuItems(menuData)} mode={mode} theme='dark' onOpenChange={handleOpenChange} onClick={onClick}>
         </Menu>
     )
 }

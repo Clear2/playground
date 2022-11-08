@@ -7,12 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "prettier": "npx prettier --write ./src/**",
-    "dd": "arco init my-project"
+    "prettier": "npx prettier --write ./src/**"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.7.0",
-    "@arco-design/arco-cli": "^1.25.0",
     "antd": "^4.23.4",
     "axios": "^1.1.3",
     "crypto-js": "^4.1.1",
